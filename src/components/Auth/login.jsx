@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Login = () => {
+const Login = ({ setIsLoggedIn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -20,9 +20,7 @@ const Login = () => {
 
       localStorage.setItem("isLoggedIn", "true");
 
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      setIsLoggedIn(true); // 🔥 important
     } else {
       setMessage("Invalid email or password ❌");
     }
