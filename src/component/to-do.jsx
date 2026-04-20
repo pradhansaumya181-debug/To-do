@@ -1,13 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function TodoApp({ setIsLoggedIn }) {
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState([]);
 
+  useEffect(() => {
+    const getItem = JSON.parse(localStorage.getItem("tasks")) || [];
+    setTasks(getItem);
+  }, []);
+
   // Add Task
   const addTask = () => {
     if (task.trim() === "") return;
-    setTasks([...tasks, task]);
+    const updatedTasks = [task, ...tasks];
+    setTasks(updatedTasks);
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
     setTask("");
   };
 
@@ -15,6 +22,7 @@ function TodoApp({ setIsLoggedIn }) {
   const deleteTask = (index) => {
     const newTasks = tasks.filter((_, i) => i !== index);
     setTasks(newTasks);
+    localStorage.setItem("tasks", JSON.stringify(newTasks));
   };
 
   // Logout
@@ -25,7 +33,6 @@ function TodoApp({ setIsLoggedIn }) {
 
   return (
     <div className="min-h-screen bg-gray-100">
-
       {/* 🔥 Top Right Logout */}
       <div className="flex justify-end p-4">
         <button
@@ -38,7 +45,6 @@ function TodoApp({ setIsLoggedIn }) {
 
       {/* 🔥 Center Content */}
       <div className="flex flex-col items-center justify-center mt-10">
-
         <h1 className="text-3xl font-bold mb-6">Todo List</h1>
 
         {/* Input Section */}
@@ -77,7 +83,6 @@ function TodoApp({ setIsLoggedIn }) {
             </li>
           ))}
         </ul>
-
       </div>
     </div>
   );
